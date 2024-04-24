@@ -1,16 +1,12 @@
-import { Bot } from "grammy";
+import { Bot, Keyboard } from "grammy";
 import dotenv from "dotenv";
+import handleStart from "./commnads/handleStart";
 dotenv.config();
+
 
 const bot: Bot = new Bot(`${process.env.TELEGRAM_BOT_TOKEN}`);
 
-bot.command("start", (ctx) => ctx.reply("Welcome! Up and running."));
-
-bot.command("hello", (ctx) => {
-    ctx.reply("hello!");
-});
-
-bot.on("message", (ctx) => ctx.reply("Got another message!"));
+bot.command(["start", "help"], handleStart);
 
 console.log("Bot started!!!!!!");
 bot.start();
