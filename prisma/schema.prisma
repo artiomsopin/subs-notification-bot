@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  telegramId    Int            @unique
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                     Int      @id @default(autoincrement())
+  serviceName            String
+  price                  Int?
+  subscriptionStartDate  DateTime
+  subscriptionExpireDate DateTime
+  user                   User?    @relation(fields: [userId], references: [id])
+  userId                 Int?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
