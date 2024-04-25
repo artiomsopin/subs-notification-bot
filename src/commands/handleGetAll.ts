@@ -1,5 +1,5 @@
 import { Context } from "grammy";
 
 export default async function handleGetAll(ctx: Context) {
-    await ctx.reply('get all');
+  await ctx.reply("get all");
 }

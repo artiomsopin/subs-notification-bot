@@ -1,10 +1,11 @@
 import { Keyboard } from "grammy";
 import { KeyboardButtonNames } from "../utils/constants/keyboardButtonNames";
 export default async function startKeyboard() {
-    return new Keyboard([
-        [KeyboardButtonNames.CREATE, KeyboardButtonNames.GET_ALL], 
-        [KeyboardButtonNames.EDIT, KeyboardButtonNames.DELETE]
-    ])
+  return new Keyboard([
+    [KeyboardButtonNames.CREATE, KeyboardButtonNames.GET_ALL],
+    [KeyboardButtonNames.EDIT, KeyboardButtonNames.DELETE],
+  ])
     .row()
-    .resized();
+    .resized()
+    .persistent();
 }

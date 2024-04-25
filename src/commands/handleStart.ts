@@ -1,11 +1,10 @@
 import { Context } from "grammy";
-import showKeyboard from "../helpers/startKeyboard";
+import startKeyboard from "../helpers/startKeyboard";
 
 export default async function handleStart(ctx: Context) {
-    const keyboard = await showKeyboard();
+  const keyboard = await startKeyboard();
 
-    await ctx.reply('Hello', {
-        reply_markup: keyboard
-    });
-
+  await ctx.reply("Hello", {
+    reply_markup: keyboard,
+  });
 }

@@ -1,5 +1,5 @@
-import { Context } from "grammy";
+import { MyContext } from "../helpers/conversationConfig";
 
-export default async function handleCreate(ctx: Context) {
-    await ctx.reply('Enter the name of the service:');
+export default async function handleCreate(ctx: MyContext) {
+  await ctx.conversation.enter("onCreateConversation");
 }
