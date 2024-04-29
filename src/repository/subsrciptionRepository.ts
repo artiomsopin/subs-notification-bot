@@ -1,7 +1,7 @@
 import { Subscription } from "@prisma/client";
 import { saveSubscriptionDto } from "../dto/saveSubscription.dto";
 
-export interface SubscriptionService {
+export interface SubscriptionRepository {
   findAllSubscriptions(telegramId: number): Promise<Subscription[] | undefined>;
 
   saveSubscription(

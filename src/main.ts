@@ -2,20 +2,24 @@
 import dotenv from "dotenv";
 dotenv.config();
 // Dependencies
-import { Bot, Composer, session } from "grammy";
+import { Bot, session } from "grammy";
 import handleStart from "./commands/handleStart";
-import { KeyboardButtonNames } from "./utils/constants/keyboardButtonNames";
-import handleCreate from "./commands/handleCreate";
+import { KeyboardButtonNames } from "./helpers/constants/keyboardButtonNames";
 import handleGetAll from "./commands/handleGetAll";
 import handleEdit from "./commands/handleEdit";
 import handleDelete from "./commands/handleDelete";
 import startPrisma from "./helpers/startPrisma";
 import errorHandler from "./helpers/errorHandler";
 import { conversations, createConversation } from "@grammyjs/conversations";
-import { MyContext, initial } from "./helpers/conversationConfig";
-import onCreateConversation from "./helpers/conversations/onCreateConversation";
-
-let create = "create";
+import { MyContext, initial } from "./helpers/conversation.config";
+import onCreateConversation from "./commands/conversations/onCreateConversation";
+import { SubscriptionServiceImpl } from "./services/subscriptionServiceImpl";
+import handleCreate from "./commands/handleCreate";
+import { myContainer } from "./helpers/inversify/inversify.config";
+import { SubscriptionService } from "./services/subscriptionService";
+import { SUBSCRIPTION_TYPES } from "./helpers/inversify/subscription.types";
+import { SubscriptionRepositoryImpl } from "./repository/subcriptionRepositoryImpl";
+import { SubscriptionRepository } from "./repository/subsrciptionRepository";
 
 async function bootstrap() {
   console.log("Starting app...");
@@ -27,7 +31,9 @@ async function bootstrap() {
     `${process.env.TELEGRAM_BOT_TOKEN}`
   );
 
-  const composer = new Composer();
+  // TODO: rewrite this with DI
+  const subscriptionService = new SubscriptionServiceImpl();
+
   bot.use(session({ initial }));
   bot.use(conversations());
   bot.use(createConversation(onCreateConversation));

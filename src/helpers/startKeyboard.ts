@@ -1,5 +1,5 @@
 import { Keyboard } from "grammy";
-import { KeyboardButtonNames } from "../utils/constants/keyboardButtonNames";
+import { KeyboardButtonNames } from "./constants/keyboardButtonNames";
 export default async function startKeyboard() {
   return new Keyboard([
     [KeyboardButtonNames.CREATE, KeyboardButtonNames.GET_ALL],

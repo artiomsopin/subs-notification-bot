@@ -3,7 +3,9 @@
     "@grammyjs/conversations": "^1.2.0",
     "@prisma/client": "^5.13.0",
     "dotenv": "^16.4.5",
-    "grammy": "^1.21.1"
+    "grammy": "^1.21.1",
+    "inversify": "^6.0.2",
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
