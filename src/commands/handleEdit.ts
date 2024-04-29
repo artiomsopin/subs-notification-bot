@@ -1,5 +1,6 @@
 import { Context } from "grammy";
+import { MyContext } from "../helpers/conversation.config";
 
-export default async function handleEdit(ctx: Context) {
-  await ctx.reply("Edit");
+export default async function handleEdit(ctx: MyContext) {
+  await ctx.conversation.enter("onEditConversation");
 }

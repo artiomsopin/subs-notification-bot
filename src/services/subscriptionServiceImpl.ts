@@ -8,7 +8,7 @@ import { SubscriptionRepository } from "../repository/subscriptionRepository";
 
 @injectable()
 export class SubscriptionServiceImpl implements SubscriptionRepository {
-  private subscriptionRepository: SubscriptionRepository;
+  private readonly subscriptionRepository: SubscriptionRepository;
 
   constructor() {
     this.subscriptionRepository = myContainer.get<SubscriptionRepository>(

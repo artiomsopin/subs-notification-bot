@@ -2,20 +2,20 @@ import { PrismaClient, Subscription } from "@prisma/client";
 import { SubscriptionRepository } from "./subscriptionRepository";
 import { injectable } from "inversify";
 import "reflect-metadata";
+import { prisma } from "../helpers/startPrisma";
 
 @injectable()
 export class SubscriptionRepositoryImpl implements SubscriptionRepository {
-  private readonly prisma = new PrismaClient();
-
   async findAllSubscriptions(
     telegramId: number
   ): Promise<Subscription[] | undefined> {
-    const user = await this.prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         telegramId: telegramId,
       },
     });
-    return await this.prisma.subscription.findMany({
+
+    return await prisma.subscription.findMany({
       where: {
         userId: user?.id as number,
       },
@@ -26,21 +26,21 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     subscription: Subscription,
     telegramId: number
   ): Promise<void> {
-    const user = await this.prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         telegramId: telegramId,
       },
     });
 
     if (!user) {
-      await this.prisma.user.create({
+      await prisma.user.create({
         data: {
           telegramId: telegramId,
         },
       });
     }
 
-    await this.prisma.subscription.create({
+    await prisma.subscription.create({
       data: {
         serviceName: subscription.serviceName,
         price: subscription.price,

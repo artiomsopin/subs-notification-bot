@@ -5,6 +5,7 @@
     "dotenv": "^16.4.5",
     "grammy": "^1.21.1",
     "inversify": "^6.0.2",
+    "moment": "^2.30.1",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {

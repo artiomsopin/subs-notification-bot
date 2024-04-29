@@ -14,6 +14,7 @@ import { conversations, createConversation } from "@grammyjs/conversations";
 import { MyContext, initial } from "./helpers/conversation.config";
 import onCreateConversation from "./commands/conversations/onCreateConversation";
 import handleCreate from "./commands/handleCreate";
+import onEditConversation from "./commands/conversations/onEditConversation";
 
 async function bootstrap() {
   console.log("Starting app...");
@@ -25,10 +26,13 @@ async function bootstrap() {
     `${process.env.TELEGRAM_BOT_TOKEN}`
   );
 
+  // Conversations
   bot.use(session({ initial }));
   bot.use(conversations());
   bot.use(createConversation(onCreateConversation));
+  bot.use(createConversation(onEditConversation));
 
+  // Commands
   bot.command(["start", "help"], handleStart);
 
   bot.hears(KeyboardButtonNames.CREATE, handleCreate);
@@ -36,6 +40,7 @@ async function bootstrap() {
   bot.hears(KeyboardButtonNames.EDIT, handleEdit);
   bot.hears(KeyboardButtonNames.DELETE, handleDelete);
 
+  // Error handler
   bot.catch(errorHandler);
 
   console.log("Bot is running...");
