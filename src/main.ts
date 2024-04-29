@@ -13,13 +13,7 @@ import errorHandler from "./helpers/errorHandler";
 import { conversations, createConversation } from "@grammyjs/conversations";
 import { MyContext, initial } from "./helpers/conversation.config";
 import onCreateConversation from "./commands/conversations/onCreateConversation";
-import { SubscriptionServiceImpl } from "./services/subscriptionServiceImpl";
 import handleCreate from "./commands/handleCreate";
-import { myContainer } from "./helpers/inversify/inversify.config";
-import { SubscriptionService } from "./services/subscriptionService";
-import { SUBSCRIPTION_TYPES } from "./helpers/inversify/subscription.types";
-import { SubscriptionRepositoryImpl } from "./repository/subcriptionRepositoryImpl";
-import { SubscriptionRepository } from "./repository/subsrciptionRepository";
 
 async function bootstrap() {
   console.log("Starting app...");
@@ -30,9 +24,6 @@ async function bootstrap() {
   const bot: Bot<MyContext> = new Bot<MyContext>(
     `${process.env.TELEGRAM_BOT_TOKEN}`
   );
-
-  // TODO: rewrite this with DI
-  const subscriptionService = new SubscriptionServiceImpl();
 
   bot.use(session({ initial }));
   bot.use(conversations());

@@ -1,7 +1,6 @@
-import { Subscription } from "@prisma/client";
 import { MyContext, MyConversation } from "../../helpers/conversation.config";
-import { SubscriptionRepositoryImpl } from "../../repository/subcriptionRepositoryImpl";
 import { saveSubscriptionDto } from "../../dto/saveSubscription.dto";
+import { SubscriptionServiceImpl } from "../../services/subcriptionServiceImpl";
 
 export default async function onCreateConversation(
   conversation: MyConversation,
@@ -30,16 +29,19 @@ export default async function onCreateConversation(
     subscriptionStartDate &&
     subscriptionExpirationDate
   ) {
-    const subscriptionRepository = new SubscriptionRepositoryImpl();
+    const subscriptionService = new SubscriptionServiceImpl();
+
     const data: saveSubscriptionDto = {
       serviceName: serviceName,
       price: parseInt(price),
       subscriptionStartDate: subscriptionStartDate,
       subscriptionExpireDate: subscriptionExpirationDate,
     };
+
     const telegramId: number = (await ctx.message?.from.id) as number;
+
     try {
-      await subscriptionRepository.saveSubscription(data, telegramId);
+      await subscriptionService.saveSubscription(data, telegramId);
       ctx.reply("Subscription was successfully created!");
     } catch (e) {
       await ctx.reply(

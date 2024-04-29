@@ -1,10 +1,10 @@
 import { Container } from "inversify";
-import { SubscriptionService } from "../../services/subscriptionService";
 import { SUBSCRIPTION_TYPES } from "./subscription.types";
-import { SubscriptionServiceImpl } from "../../services/subscriptionServiceImpl";
-import { SubscriptionRepository } from "../../repository/subsrciptionRepository";
-import { SubscriptionRepositoryImpl } from "../../repository/subcriptionRepositoryImpl";
 import "reflect-metadata";
+import { SubscriptionServiceImpl } from "../../services/subcriptionServiceImpl";
+import { SubscriptionService } from "../../services/subsrciptionService";
+import { SubscriptionRepository } from "../../repository/subscriptionRepository";
+import { SubscriptionRepositoryImpl } from "../../repository/subscriptionRepositoryImpl";
 
 export const myContainer = new Container();
 myContainer

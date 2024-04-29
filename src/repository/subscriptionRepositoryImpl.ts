@@ -1,10 +1,10 @@
 import { PrismaClient, Subscription } from "@prisma/client";
-import { SubscriptionService } from "./subscriptionService";
+import { SubscriptionRepository } from "./subscriptionRepository";
 import { injectable } from "inversify";
 import "reflect-metadata";
 
 @injectable()
-export class SubscriptionServiceImpl implements SubscriptionService {
+export class SubscriptionRepositoryImpl implements SubscriptionRepository {
   private readonly prisma = new PrismaClient();
 
   async findAllSubscriptions(
