@@ -9,5 +9,14 @@ export interface SubscriptionService {
     telegramId: number
   ): Promise<void>;
 
-  findByExpirationDate(expirationDate: Date): Promise<Subscription[]>;
+  deleteByServiceName(serviceName: string, telegramId: number): Promise<void>;
+
+  editByServiceName(
+    serviceNameToFind: string,
+    telegramId: number,
+    serviceNameToEdit?: string,
+    price?: number,
+    subscriptionStartDate?: Date,
+    subscriptionExpirationDate?: Date
+  ): Promise<Subscription>;
 }

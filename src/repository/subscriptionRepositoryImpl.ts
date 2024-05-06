@@ -6,6 +6,48 @@ import { prisma } from "../helpers/startPrisma";
 
 @injectable()
 export class SubscriptionRepositoryImpl implements SubscriptionRepository {
+  async editByServiceName(
+    serviceNameToFind: string,
+    telegramId: number,
+    serviceNameToEdit?: string | undefined,
+    price?: number | undefined,
+    subscriptionStartDate?: Date | undefined,
+    subscriptionExpirationDate?: Date | undefined
+  ): Promise<Subscription> {
+    const user = await prisma.user.findUnique({
+      where: {
+        telegramId: telegramId,
+      },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const subscription = await prisma.subscription.findFirst({
+      where: {
+        serviceName: serviceNameToFind,
+        userId: user.id,
+      },
+    });
+
+    if (!subscription) {
+      throw new Error("Subscription not found");
+    }
+
+    return await prisma.subscription.update({
+      where: {
+        id: subscription.id,
+      },
+      data: {
+        serviceName: serviceNameToEdit,
+        price: price,
+        subscriptionStartDate: subscriptionStartDate,
+        subscriptionExpireDate: subscriptionExpirationDate,
+      },
+    });
+  }
+
   async findAllSubscriptions(
     telegramId: number
   ): Promise<Subscription[] | undefined> {
@@ -51,7 +93,17 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     });
   }
 
-  async findByExpirationDate(expirationDate: Date): Promise<Subscription[]> {
-    throw new Error("Method not implemented.");
+  async deleteByServiceName(
+    serviceName: string,
+    telegramId: number
+  ): Promise<void> {
+    await prisma.subscription.deleteMany({
+      where: {
+        serviceName: serviceName,
+        user: {
+          telegramId: telegramId,
+        },
+      },
+    });
   }
 }

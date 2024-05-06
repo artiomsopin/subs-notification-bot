@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@grammyjs/conversations": "^1.2.0",
+    "@grammyjs/menu": "^1.2.1",
     "@prisma/client": "^5.13.0",
     "dotenv": "^16.4.5",
     "grammy": "^1.21.1",

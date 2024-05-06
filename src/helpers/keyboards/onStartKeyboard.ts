@@ -1,9 +1,9 @@
 import { Keyboard } from "grammy";
-import { KeyboardButtonNames } from "../constants/keyboardButtonNames";
-export default async function onStartKeyboard() {
+import { onStartKeyboardButtonNames } from "../constants/onStartKeyboardButtonNames";
+export default function onStartKeyboard() {
   return new Keyboard([
-    [KeyboardButtonNames.CREATE, KeyboardButtonNames.GET_ALL],
-    [KeyboardButtonNames.EDIT, KeyboardButtonNames.DELETE],
+    [onStartKeyboardButtonNames.CREATE, onStartKeyboardButtonNames.GET_ALL],
+    [onStartKeyboardButtonNames.EDIT, onStartKeyboardButtonNames.DELETE],
   ])
     .row()
     .resized()

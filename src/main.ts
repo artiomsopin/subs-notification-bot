@@ -4,7 +4,7 @@ dotenv.config();
 // Dependencies
 import { Bot, session } from "grammy";
 import handleStart from "./commands/handleStart";
-import { KeyboardButtonNames } from "./helpers/constants/keyboardButtonNames";
+import { onStartKeyboardButtonNames } from "./helpers/constants/onStartKeyboardButtonNames";
 import handleGetAll from "./commands/handleGetAll";
 import handleEdit from "./commands/handleEdit";
 import handleDelete from "./commands/handleDelete";
@@ -15,13 +15,16 @@ import { MyContext, initial } from "./helpers/conversation.config";
 import onCreateConversation from "./commands/conversations/onCreateConversation";
 import handleCreate from "./commands/handleCreate";
 import onEditConversation from "./commands/conversations/onEditConversation";
+import onDeleteConversation from "./commands/conversations/onDeleteConversation";
 
 async function bootstrap() {
   console.log("Starting app...");
 
+  // Prisma
   await startPrisma();
   console.log("Prisma started");
 
+  // Bot
   const bot: Bot<MyContext> = new Bot<MyContext>(
     `${process.env.TELEGRAM_BOT_TOKEN}`
   );
@@ -31,14 +34,15 @@ async function bootstrap() {
   bot.use(conversations());
   bot.use(createConversation(onCreateConversation));
   bot.use(createConversation(onEditConversation));
+  bot.use(createConversation(onDeleteConversation));
 
   // Commands
   bot.command(["start", "help"], handleStart);
 
-  bot.hears(KeyboardButtonNames.CREATE, handleCreate);
-  bot.hears(KeyboardButtonNames.GET_ALL, handleGetAll);
-  bot.hears(KeyboardButtonNames.EDIT, handleEdit);
-  bot.hears(KeyboardButtonNames.DELETE, handleDelete);
+  bot.hears(onStartKeyboardButtonNames.CREATE, handleCreate);
+  bot.hears(onStartKeyboardButtonNames.GET_ALL, handleGetAll);
+  bot.hears(onStartKeyboardButtonNames.EDIT, handleEdit);
+  bot.hears(onStartKeyboardButtonNames.DELETE, handleDelete);
 
   // Error handler
   bot.catch(errorHandler);

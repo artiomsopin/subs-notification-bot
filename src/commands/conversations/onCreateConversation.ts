@@ -60,7 +60,7 @@ export default async function onCreateConversation(
   }
 }
 
-function parseDate(date: string): Date {
+export function parseDate(date: string): Date {
   // TODO: rewrite this with timezones
   const twelveHours = 3600000 * 12;
   return new Date(new Date().setTime(Date.parse(date) + twelveHours));

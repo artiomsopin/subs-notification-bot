@@ -1,5 +1,10 @@
 import { Keyboard } from "grammy";
-import { KeyboardButtonNames } from "../constants/keyboardButtonNames";
-export default async function onEditKeyboard() {
-  return new Keyboard().text("Skip ⏭️").row().resized().persistent();
+import { onStartKeyboardButtonNames } from "../constants/onStartKeyboardButtonNames";
+import { onEditKeyboardButtonNames } from "../constants/onEditKeyboardButtonNames";
+export default function onEditKeyboard() {
+  return new Keyboard()
+    .text(onEditKeyboardButtonNames.SKIP)
+    .row()
+    .resized()
+    .persistent();
 }
