@@ -3,6 +3,7 @@ import { onEditKeyboardButtonNames } from "../../helpers/constants/onEditKeyboar
 import { MyContext, MyConversation } from "../../helpers/conversation.config";
 import onEditKeyboard from "../../helpers/keyboards/onEdtiKeyboard";
 import onStartKeyboard from "../../helpers/keyboards/onStartKeyboard";
+import { SubscriptionService } from "../../services/subscriptionService";
 import { SubscriptionServiceImpl } from "../../services/subscriptionServiceImpl";
 import { parseDate } from "./onCreateConversation";
 
@@ -31,7 +32,7 @@ export default async function onEditConversation(
   if (price === onEditKeyboardButtonNames.SKIP) {
     price = undefined;
   } else {
-    price = parseInt(price);
+    price = parseFloat(price);
   }
 
   await ctx.reply(
@@ -61,6 +62,7 @@ export default async function onEditConversation(
   }
 
   const telegramId = ctx.message?.from.id as number;
+
   const editSubscriptionData: editSubscriptionDto = {
     serviceNameToFind,
     telegramId,
@@ -69,9 +71,14 @@ export default async function onEditConversation(
     subscriptionStartDate,
     subscriptionExpireDate,
   };
+
   try {
-    const subscriptionService = new SubscriptionServiceImpl();
-    await subscriptionService.editByServiceName(editSubscriptionData);
+    const subscriptionService: SubscriptionService =
+      new SubscriptionServiceImpl();
+    await subscriptionService.editSubscriptionByServiceName(
+      editSubscriptionData
+    );
+
     ctx.reply("Subscription edited successfully ✅", {
       reply_markup: onStartKeyboard(),
     });

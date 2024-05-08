@@ -2,10 +2,10 @@ import { Subscription } from "@prisma/client";
 import { SubscriptionServiceImpl } from "../services/subscriptionServiceImpl";
 import moment from "moment";
 import { MyContext } from "../helpers/conversation.config";
-import { InlineKeyboard } from "grammy";
+import { SubscriptionService } from "../services/subscriptionService";
 
 export default async function handleGetAll(ctx: MyContext) {
-  const subscriptionService = new SubscriptionServiceImpl();
+  const subscriptionService: SubscriptionService = new SubscriptionServiceImpl();
   const telegramId: number = ctx.message?.from.id as number;
 
   const subscriptions: Subscription[] | undefined =

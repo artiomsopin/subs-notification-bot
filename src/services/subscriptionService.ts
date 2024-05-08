@@ -3,7 +3,7 @@ import { saveSubscriptionDto } from "../dto/saveSubscription.dto";
 import { editSubscriptionDto } from "../dto/editSubscription.dto";
 
 export interface SubscriptionService {
-  findAllSubscriptions(telegramId: number): Promise<Subscription[] | undefined>;
+  findAllSubscriptions(telegramId: number): Promise<Subscription[]>;
 
   saveSubscription(
     subscription: saveSubscriptionDto,
@@ -12,7 +12,11 @@ export interface SubscriptionService {
 
   deleteByServiceName(serviceName: string, telegramId: number): Promise<void>;
 
-  editByServiceName(
+  editSubscriptionByServiceName(
     editSubscriptionData: editSubscriptionDto
   ): Promise<Subscription>;
+
+  findSubscriptionsByExpirationDate(expireDate: Date): Promise<Subscription[]>;
+
+  getTelegramIdByUserId(userId: number): Promise<number>;
 }

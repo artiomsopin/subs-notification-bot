@@ -17,17 +17,15 @@ export class SubscriptionServiceImpl implements SubscriptionService {
       SUBSCRIPTION_TYPES.SubscriptionRepository
     );
   }
-  async editByServiceName(
-    editSubscription: editSubscriptionDto
+  async editSubscriptionByServiceName(
+    editSubscriptionData: editSubscriptionDto
   ): Promise<Subscription> {
-    return await this.subscriptionRepository.editByServiceName(
-      editSubscription
+    return await this.subscriptionRepository.editSubscriptionByServiceName(
+      editSubscriptionData
     );
   }
 
-  async findAllSubscriptions(
-    telegramId: number
-  ): Promise<Subscription[] | undefined> {
+  async findAllSubscriptions(telegramId: number): Promise<Subscription[]> {
     return await this.subscriptionRepository.findAllSubscriptions(telegramId);
   }
 
@@ -49,5 +47,17 @@ export class SubscriptionServiceImpl implements SubscriptionService {
       serviceName,
       telegramId
     );
+  }
+
+  async findSubscriptionsByExpirationDate(
+    expireDate: Date
+  ): Promise<Subscription[]> {
+    return await this.subscriptionRepository.findSubscriptionsByExpirationDate(
+      expireDate
+    );
+  }
+
+  async getTelegramIdByUserId(userId: number): Promise<number> {
+    return await this.subscriptionRepository.getTelegramIdByUserId(userId);
   }
 }

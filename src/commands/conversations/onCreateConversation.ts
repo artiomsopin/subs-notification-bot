@@ -1,16 +1,20 @@
 import { MyContext, MyConversation } from "../../helpers/conversation.config";
 import { saveSubscriptionDto } from "../../dto/saveSubscription.dto";
 import { SubscriptionServiceImpl } from "../../services/subscriptionServiceImpl";
+import { SubscriptionService } from "../../services/subscriptionService";
 
 export default async function onCreateConversation(
   conversation: MyConversation,
   ctx: MyContext
 ) {
   await ctx.reply("Enter the name of the service 🔍");
-  const serviceName = (await conversation.wait()).message?.text;
+  const serviceName: string = (await conversation.wait()).message
+    ?.text as string;
 
   await ctx.reply("Enter the price 💰");
-  const price = (await conversation.wait()).message?.text;
+  const price: number = parseFloat(
+    (await conversation.wait()).message?.text as string
+  );
 
   await ctx.reply(
     `Enter the subscription start date by *MM\\-DD\\-YYYY* pattern ▶️`,
@@ -25,7 +29,7 @@ export default async function onCreateConversation(
     "Enter subscription expiration date by *MM\\-DD\\-YYYY* pattern ⏯",
     { parse_mode: "MarkdownV2" }
   );
-  const subscriptionExpirationDate = parseDate(
+  const subscriptionExpirationDate: Date = parseDate(
     (await conversation.wait()).message?.text as string
   );
 
@@ -35,11 +39,12 @@ export default async function onCreateConversation(
     subscriptionStartDate &&
     subscriptionExpirationDate
   ) {
-    const subscriptionService = new SubscriptionServiceImpl();
+    const subscriptionService: SubscriptionService =
+      new SubscriptionServiceImpl();
 
     const data: saveSubscriptionDto = {
       serviceName: serviceName,
-      price: parseInt(price),
+      price: price,
       subscriptionStartDate: subscriptionStartDate,
       subscriptionExpireDate: subscriptionExpirationDate,
     };
@@ -61,7 +66,5 @@ export default async function onCreateConversation(
 }
 
 export function parseDate(date: string): Date {
-  // TODO: rewrite this with timezones
-  const twelveHours = 3600000 * 12;
-  return new Date(new Date().setTime(Date.parse(date) + twelveHours));
+  return new Date(new Date().setTime(Date.parse(date)));
 }

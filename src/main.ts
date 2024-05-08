@@ -16,6 +16,7 @@ import onCreateConversation from "./commands/conversations/onCreateConversation"
 import handleCreate from "./commands/handleCreate";
 import onEditConversation from "./commands/conversations/onEditConversation";
 import onDeleteConversation from "./commands/conversations/onDeleteConversation";
+import { ReminderScheduled } from "./scheduled/reminderScheduled";
 
 async function bootstrap() {
   console.log("Starting app...");
@@ -28,6 +29,10 @@ async function bootstrap() {
   const bot: Bot<MyContext> = new Bot<MyContext>(
     `${process.env.TELEGRAM_BOT_TOKEN}`
   );
+
+  // Scheduled cron
+  const reminderScheduled = new ReminderScheduled(bot);
+  reminderScheduled.sendReminders();
 
   // Conversations
   bot.use(session({ initial }));
