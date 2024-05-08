@@ -6,6 +6,7 @@ import { Subscription } from "@prisma/client";
 import { saveSubscriptionDto } from "../dto/saveSubscription.dto";
 import { SubscriptionRepository } from "../repository/subscriptionRepository";
 import { SubscriptionService } from "./subscriptionService";
+import { editSubscriptionDto } from "../dto/editSubscription.dto";
 
 @injectable()
 export class SubscriptionServiceImpl implements SubscriptionService {
@@ -16,21 +17,11 @@ export class SubscriptionServiceImpl implements SubscriptionService {
       SUBSCRIPTION_TYPES.SubscriptionRepository
     );
   }
-  editByServiceName(
-    serviceNameToFind: string,
-    telegramId: number,
-    serviceNameToEdit?: string | undefined,
-    price?: number | undefined,
-    subscriptionStartDate?: Date | undefined,
-    subscriptionExpirationDate?: Date | undefined
+  async editByServiceName(
+    editSubscription: editSubscriptionDto
   ): Promise<Subscription> {
-    return this.subscriptionRepository.editByServiceName(
-      serviceNameToFind,
-      telegramId,
-      serviceNameToEdit,
-      price,
-      subscriptionStartDate,
-      subscriptionExpirationDate
+    return await this.subscriptionRepository.editByServiceName(
+      editSubscription
     );
   }
 

@@ -1,5 +1,6 @@
 import { Subscription } from "@prisma/client";
 import { saveSubscriptionDto } from "../dto/saveSubscription.dto";
+import { editSubscriptionDto } from "../dto/editSubscription.dto";
 
 export interface SubscriptionRepository {
   findAllSubscriptions(telegramId: number): Promise<Subscription[] | undefined>;
@@ -12,11 +13,6 @@ export interface SubscriptionRepository {
   deleteByServiceName(serviceName: string, telegramId: number): Promise<void>;
 
   editByServiceName(
-    serviceNameToFind: string,
-    telegramId: number,
-    serviceNameToEdit?: string,
-    price?: number,
-    subscriptionStartDate?: Date,
-    subscriptionExpirationDate?: Date
+    editSubscriptionData: editSubscriptionDto
   ): Promise<Subscription>;
 }

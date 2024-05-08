@@ -1,3 +1,4 @@
+import { editSubscriptionDto } from "../../dto/editSubscription.dto";
 import { onEditKeyboardButtonNames } from "../../helpers/constants/onEditKeyboardButtonNames";
 import { MyContext, MyConversation } from "../../helpers/conversation.config";
 import onEditKeyboard from "../../helpers/keyboards/onEdtiKeyboard";
@@ -50,27 +51,27 @@ export default async function onEditConversation(
     "Enter subscription expiration date by *MM\\-DD\\-YYYY* pattern ⏯",
     { parse_mode: "MarkdownV2", reply_markup: onEditKeyboard() }
   );
-  let subscriptionExpirationDate: string | undefined | Date = (
+  let subscriptionExpireDate: string | undefined | Date = (
     await conversation.wait()
   ).message?.text as string;
-  if (subscriptionExpirationDate === onEditKeyboardButtonNames.SKIP) {
-    subscriptionExpirationDate = undefined;
+  if (subscriptionExpireDate === onEditKeyboardButtonNames.SKIP) {
+    subscriptionExpireDate = undefined;
   } else {
-    subscriptionExpirationDate = parseDate(subscriptionExpirationDate);
+    subscriptionExpireDate = parseDate(subscriptionExpireDate);
   }
 
   const telegramId = ctx.message?.from.id as number;
-
+  const editSubscriptionData: editSubscriptionDto = {
+    serviceNameToFind,
+    telegramId,
+    serviceNameToEdit,
+    price,
+    subscriptionStartDate,
+    subscriptionExpireDate,
+  };
   try {
     const subscriptionService = new SubscriptionServiceImpl();
-    await subscriptionService.editByServiceName(
-      serviceNameToFind,
-      telegramId,
-      serviceNameToEdit,
-      price,
-      subscriptionStartDate,
-      subscriptionExpirationDate
-    );
+    await subscriptionService.editByServiceName(editSubscriptionData);
     ctx.reply("Subscription edited successfully ✅", {
       reply_markup: onStartKeyboard(),
     });

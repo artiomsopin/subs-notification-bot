@@ -3,20 +3,16 @@ import { SubscriptionRepository } from "./subscriptionRepository";
 import { injectable } from "inversify";
 import "reflect-metadata";
 import { prisma } from "../helpers/startPrisma";
+import { editSubscriptionDto } from "../dto/editSubscription.dto";
 
 @injectable()
 export class SubscriptionRepositoryImpl implements SubscriptionRepository {
   async editByServiceName(
-    serviceNameToFind: string,
-    telegramId: number,
-    serviceNameToEdit?: string | undefined,
-    price?: number | undefined,
-    subscriptionStartDate?: Date | undefined,
-    subscriptionExpirationDate?: Date | undefined
+    editSubscriptionData: editSubscriptionDto
   ): Promise<Subscription> {
     const user = await prisma.user.findUnique({
       where: {
-        telegramId: telegramId,
+        telegramId: editSubscriptionData.telegramId,
       },
     });
 
@@ -26,7 +22,7 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
 
     const subscription = await prisma.subscription.findFirst({
       where: {
-        serviceName: serviceNameToFind,
+        serviceName: editSubscriptionData.serviceNameToFind,
         userId: user.id,
       },
     });
@@ -40,10 +36,10 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
         id: subscription.id,
       },
       data: {
-        serviceName: serviceNameToEdit,
-        price: price,
-        subscriptionStartDate: subscriptionStartDate,
-        subscriptionExpireDate: subscriptionExpirationDate,
+        serviceName: editSubscriptionData.serviceNameToEdit,
+        price: editSubscriptionData.price,
+        subscriptionStartDate: editSubscriptionData.subscriptionStartDate,
+        subscriptionExpireDate: editSubscriptionData.subscriptionExpireDate,
       },
     });
   }
