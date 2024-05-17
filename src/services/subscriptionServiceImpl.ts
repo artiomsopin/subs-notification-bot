@@ -60,4 +60,14 @@ export class SubscriptionServiceImpl implements SubscriptionService {
   async getTelegramIdByUserId(userId: number): Promise<number> {
     return await this.subscriptionRepository.getTelegramIdByUserId(userId);
   }
+
+  async renewSubscriptionExpirationDate(
+    renewedExpirationDate: Date,
+    subscriptionId: number
+  ): Promise<void> {
+    this.subscriptionRepository.renewSubscriptionExpirationDate(
+      renewedExpirationDate,
+      subscriptionId
+    );
+  }
 }

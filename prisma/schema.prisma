@@ -17,7 +17,7 @@ model Subscription {
   id                     Int      @id @default(autoincrement())
   serviceName            String
   price                  Float
-  subscriptionStartDate  DateTime @db.Timestamptz
+  expirationPeriod       Int
   subscriptionExpireDate DateTime @db.Timestamptz
   user                   User     @relation(fields: [userId], references: [id])
   userId                 Int

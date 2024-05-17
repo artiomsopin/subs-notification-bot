@@ -17,6 +17,7 @@ import handleCreate from "./commands/handleCreate";
 import onEditConversation from "./commands/conversations/onEditConversation";
 import onDeleteConversation from "./commands/conversations/onDeleteConversation";
 import { ReminderScheduled } from "./scheduled/reminderScheduled";
+import { commandList } from "./helpers/constants/commandList";
 
 async function bootstrap() {
   console.log("Starting app...");
@@ -31,7 +32,7 @@ async function bootstrap() {
   );
 
   // Scheduled cron
-  const reminderScheduled = new ReminderScheduled(bot);
+  const reminderScheduled: ReminderScheduled = new ReminderScheduled(bot);
   reminderScheduled.sendReminders();
 
   // Conversations
@@ -42,7 +43,13 @@ async function bootstrap() {
   bot.use(createConversation(onDeleteConversation));
 
   // Commands
+  bot.api.setMyCommands(commandList);
+
   bot.command(["start", "help"], handleStart);
+  bot.command("create", handleCreate);
+  bot.command("getall", handleGetAll);
+  bot.command("edit", handleEdit);
+  bot.command("delete", handleDelete);
 
   bot.hears(onStartKeyboardButtonNames.CREATE, handleCreate);
   bot.hears(onStartKeyboardButtonNames.GET_ALL, handleGetAll);

@@ -10,16 +10,19 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
   async editSubscriptionByServiceName(
     editSubscriptionData: editSubscriptionDto
   ): Promise<Subscription> {
+    // Find user by it's telegram id
     const user = await prisma.user.findUnique({
       where: {
         telegramId: editSubscriptionData.telegramId,
       },
     });
 
+    // Throw error if user not found
     if (!user) {
       throw new Error("User not found");
     }
 
+    // Find subscription by it's service name
     const subscription = await prisma.subscription.findFirst({
       where: {
         serviceName: editSubscriptionData.serviceNameToFind,
@@ -27,10 +30,12 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
       },
     });
 
+    // Throw error if subscription not found
     if (!subscription) {
       throw new Error("Subscription not found");
     }
 
+    // Subscription updating
     return await prisma.subscription.update({
       where: {
         id: subscription.id,
@@ -38,7 +43,7 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
       data: {
         serviceName: editSubscriptionData.serviceNameToEdit,
         price: editSubscriptionData.price,
-        subscriptionStartDate: editSubscriptionData.subscriptionStartDate,
+        expirationPeriod: editSubscriptionData.expirationPeriod,
         subscriptionExpireDate: editSubscriptionData.subscriptionExpireDate,
       },
     });
@@ -81,16 +86,19 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
         },
       });
     }
-
-    await prisma.subscription.create({
-      data: {
-        serviceName: subscription.serviceName,
-        price: subscription.price,
-        subscriptionStartDate: subscription.subscriptionStartDate,
-        subscriptionExpireDate: subscription.subscriptionExpireDate,
-        userId: user?.id as number,
-      },
-    });
+    try {
+      await prisma.subscription.create({
+        data: {
+          serviceName: subscription.serviceName,
+          price: subscription.price,
+          expirationPeriod: subscription.expirationPeriod,
+          subscriptionExpireDate: subscription.subscriptionExpireDate,
+          userId: user?.id as number,
+        },
+      });
+    } catch (error) {
+      throw new Error("Incorrect data");
+    }
   }
 
   async deleteByServiceName(
@@ -143,5 +151,20 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     }
 
     return user.telegramId;
+  }
+
+  async renewSubscriptionExpirationDate(
+    renewedExpirationDate: Date,
+    subscriptionId: number
+  ): Promise<void> {
+    // Update subscription expiration date by provided new date and subscription id
+    await prisma.subscription.update({
+      where: {
+        id: subscriptionId,
+      },
+      data: {
+        subscriptionExpireDate: renewedExpirationDate,
+      },
+    });
   }
 }

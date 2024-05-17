@@ -4,7 +4,7 @@ export class editSubscriptionDto {
     public telegramId: number,
     public serviceNameToEdit?: string,
     public price?: number,
-    public subscriptionStartDate?: Date,
+    public expirationPeriod?: number,
     public subscriptionExpireDate?: Date
   ) {}
 }

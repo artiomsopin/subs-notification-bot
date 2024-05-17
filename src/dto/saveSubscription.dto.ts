@@ -2,7 +2,7 @@ export class saveSubscriptionDto {
   constructor(
     serviceName: string,
     price: number,
-    subscriptionStartDate: Date,
+    expirationPeriod: number,
     subscriptionExpireDate: Date
   ) {}
 }

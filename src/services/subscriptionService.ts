@@ -19,4 +19,9 @@ export interface SubscriptionService {
   findSubscriptionsByExpirationDate(expireDate: Date): Promise<Subscription[]>;
 
   getTelegramIdByUserId(userId: number): Promise<number>;
+
+  renewSubscriptionExpirationDate(
+    renewedExpirationDate: Date,
+    subscriptionId: number
+  ): Promise<void>;
 }

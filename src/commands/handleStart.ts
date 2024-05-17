@@ -1,10 +1,9 @@
-import { Context } from "grammy";
 import onStartKeyboard from "../helpers/keyboards/onStartKeyboard";
-
-export default async function handleStart(ctx: Context) {
-  const keyboard = onStartKeyboard();
-
-  await ctx.reply("Hello", {
-    reply_markup: keyboard,
+import { MyContext } from "../helpers/conversation.config";
+import { onStartInfo } from "../helpers/constants/onStartInfo";
+export default async function handleStart(ctx: MyContext) {
+  await ctx.reply(onStartInfo, {
+    reply_markup: onStartKeyboard(),
+    parse_mode: "HTML",
   });
 }
