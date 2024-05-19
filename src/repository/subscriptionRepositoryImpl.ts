@@ -73,15 +73,15 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     telegramId: number
   ): Promise<void> {
     // User existing validation
-    const user: User | null = await prisma.user.findFirst({
+    let user: User | null = await prisma.user.findFirst({
       where: {
         telegramId: telegramId,
       },
     });
 
     // Create user if it doesn't exist
-    if (!user) {
-      await prisma.user.create({
+    if (user === null) {
+      user = await prisma.user.create({
         data: {
           telegramId: telegramId,
         },
