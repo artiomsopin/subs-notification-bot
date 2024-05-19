@@ -18,6 +18,7 @@ import onEditConversation from "./commands/conversations/onEditConversation";
 import onDeleteConversation from "./commands/conversations/onDeleteConversation";
 import { ReminderScheduled } from "./scheduled/reminderScheduled";
 import { commandList } from "./helpers/constants/commandList";
+import express from "express";
 
 async function bootstrap() {
   console.log("Starting app...");
@@ -61,6 +62,12 @@ async function bootstrap() {
 
   console.log("Bot is running...");
   bot.start();
+
+  // Port listening
+  const app = express();
+  app.listen(process.env.PORT || 8080, () => {
+    console.log(`Server started on port ${process.env.PORT || 8080}`);
+  });
 }
 
 void bootstrap();
