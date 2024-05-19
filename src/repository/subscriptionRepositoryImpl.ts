@@ -86,19 +86,16 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
         },
       });
     }
-    try {
-      await prisma.subscription.create({
-        data: {
-          serviceName: subscription.serviceName,
-          price: subscription.price,
-          expirationPeriod: subscription.expirationPeriod,
-          subscriptionExpireDate: subscription.subscriptionExpireDate,
-          userId: user?.id as number,
-        },
-      });
-    } catch (error) {
-      throw new Error("Incorrect data");
-    }
+
+    await prisma.subscription.create({
+      data: {
+        serviceName: subscription.serviceName,
+        price: subscription.price,
+        expirationPeriod: subscription.expirationPeriod,
+        subscriptionExpireDate: subscription.subscriptionExpireDate,
+        userId: user?.id as number,
+      },
+    });
   }
 
   async deleteByServiceName(
@@ -157,7 +154,7 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     renewedExpirationDate: Date,
     subscriptionId: number
   ): Promise<void> {
-    // Update subscription expiration date by provided new date and subscription id
+    // Renew subscription expiration date by provided new date and subscription id
     await prisma.subscription.update({
       where: {
         id: subscriptionId,

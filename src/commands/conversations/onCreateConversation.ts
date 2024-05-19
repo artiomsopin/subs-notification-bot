@@ -48,6 +48,7 @@ export default async function onCreateConversation(
     };
 
     const telegramId: number = (await ctx.message?.from.id) as number;
+
     await subscriptionService.saveSubscription(data, telegramId);
     ctx.reply("✅ Subscription was *successfully created\\!*", {
       parse_mode: "MarkdownV2",

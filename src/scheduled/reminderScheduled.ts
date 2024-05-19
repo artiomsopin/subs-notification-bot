@@ -4,6 +4,7 @@ import { SubscriptionServiceImpl } from "../services/subscriptionServiceImpl";
 import moment from "moment";
 import { MyContext } from "../helpers/conversation.config";
 import onStartKeyboard from "../helpers/keyboards/onStartKeyboard";
+import { Subscription } from "@prisma/client";
 
 export class ReminderScheduled {
   subscriptionService: SubscriptionServiceImpl = new SubscriptionServiceImpl();
@@ -15,15 +16,16 @@ export class ReminderScheduled {
       // Notify users and renew subscriptions expiration date that will expire tomorrow
       const tomorrowDate: Date = moment().startOf("day").add(1, "day").toDate();
 
-      const tomorrowExpiringSubscriptions =
+      const tomorrowExpiringSubscriptions: Subscription[] =
         await this.subscriptionService.findSubscriptionsByExpirationDate(
           tomorrowDate
         );
 
       tomorrowExpiringSubscriptions.forEach(async (subscription) => {
-        const telegramId = await this.subscriptionService.getTelegramIdByUserId(
-          subscription.userId
-        );
+        const telegramId: number =
+          await this.subscriptionService.getTelegramIdByUserId(
+            subscription.userId
+          );
         await this.bot.api.sendMessage(
           telegramId,
           `⏳ Your subscription for <b>${subscription.serviceName}</b> expires <b>tomorrow!</b> It will be <b>automatically renewed</b> according to your expiration period: <b>${subscription.expirationPeriod} months.</b>` +
@@ -53,15 +55,16 @@ export class ReminderScheduled {
         .add(7, "day")
         .toDate();
 
-      const weekLaterExpiringSubscriptions =
+      const weekLaterExpiringSubscriptions: Subscription[] =
         await this.subscriptionService.findSubscriptionsByExpirationDate(
           weekLaterDate
         );
 
       weekLaterExpiringSubscriptions.forEach(async (subscription) => {
-        const telegramId = await this.subscriptionService.getTelegramIdByUserId(
-          subscription.userId
-        );
+        const telegramId: number =
+          await this.subscriptionService.getTelegramIdByUserId(
+            subscription.userId
+          );
         await this.bot.api.sendMessage(
           telegramId,
           `⏳ Your subscription for <b>${subscription.serviceName}</b> expires <b>in a week!</b>` +

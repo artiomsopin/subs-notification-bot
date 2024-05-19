@@ -65,7 +65,7 @@ export class SubscriptionServiceImpl implements SubscriptionService {
     renewedExpirationDate: Date,
     subscriptionId: number
   ): Promise<void> {
-    this.subscriptionRepository.renewSubscriptionExpirationDate(
+    await this.subscriptionRepository.renewSubscriptionExpirationDate(
       renewedExpirationDate,
       subscriptionId
     );

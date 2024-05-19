@@ -1,6 +1,3 @@
-import { MyContext } from "../conversation.config";
-import onStartKeyboard from "../keyboards/onStartKeyboard";
-
 export const onStartInfo: string =
   "<b>Hello!👋</b>" +
   "\n\n" +
