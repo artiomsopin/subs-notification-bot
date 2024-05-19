@@ -11,7 +11,7 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     editSubscriptionData: editSubscriptionDto
   ): Promise<Subscription> {
     // Find user by it's telegram id
-    const user = await prisma.user.findUnique({
+    const user: User | null = await prisma.user.findUnique({
       where: {
         telegramId: editSubscriptionData.telegramId,
       },
@@ -23,12 +23,13 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     }
 
     // Find subscription by it's service name
-    const subscription = await prisma.subscription.findFirst({
-      where: {
-        serviceName: editSubscriptionData.serviceNameToFind,
-        userId: user.id,
-      },
-    });
+    const subscription: Subscription | null =
+      await prisma.subscription.findFirst({
+        where: {
+          serviceName: editSubscriptionData.serviceNameToFind,
+          userId: user.id,
+        },
+      });
 
     // Throw error if subscription not found
     if (!subscription) {
@@ -50,7 +51,7 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
   }
 
   async findAllSubscriptions(telegramId: number): Promise<Subscription[]> {
-    const user = await prisma.user.findFirst({
+    const user: User | null = await prisma.user.findFirst({
       where: {
         telegramId: telegramId,
       },
@@ -72,7 +73,7 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     telegramId: number
   ): Promise<void> {
     // User existing validation
-    const user = await prisma.user.findFirst({
+    const user: User | null = await prisma.user.findFirst({
       where: {
         telegramId: telegramId,
       },

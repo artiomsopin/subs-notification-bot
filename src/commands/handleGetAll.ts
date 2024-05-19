@@ -9,9 +9,17 @@ export default async function handleGetAll(ctx: MyContext) {
     new SubscriptionServiceImpl();
   const telegramId: number = ctx.message?.from.id as number;
 
-  const subscriptions: Subscription[] | undefined =
-    await subscriptionService.findAllSubscriptions(telegramId);
+  let subscriptions: Subscription[] | undefined;
+  // Validation in case of non-existing user
+  try {
+    subscriptions = await subscriptionService.findAllSubscriptions(telegramId);
+  } catch (error) {
+    await ctx.reply("<b>You should first create a subscription</b>", {
+      parse_mode: "HTML",
+    });
+  }
 
+  // Validation for subscriptions in case of existing user
   if (subscriptions?.length) {
     for (const subscription of subscriptions) {
       await ctx.reply(
