@@ -29,7 +29,7 @@ A custom bot developed using Node.js and TypeScript to notify users about expiri
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/your-repo-name.git
+    git clone https://github.com/artiomsopin/subs-notification-bot
     cd your-repo-name
     ```
 
