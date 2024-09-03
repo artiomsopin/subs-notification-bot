@@ -30,7 +30,7 @@ A custom bot developed using Node.js and TypeScript to notify users about expiri
 1. Clone the repository:
     ```bash
     git clone https://github.com/artiomsopin/subs-notification-bot
-    cd your-repo-name
+    cd subs-notification-bot
     ```
 
 2. Install dependencies:
