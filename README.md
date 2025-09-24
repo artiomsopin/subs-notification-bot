@@ -1,20 +1,17 @@
-# Custom Subscription Notification Bot
+# Subscription Notification Bot
 
 A custom bot developed using Node.js and TypeScript to notify users about expiring paid subscriptions via private messages on Telegram. This bot utilizes Long-Pooling technology and the Grammy.js library.
 
+### Active example is accessible via Telegram: @SubsNotificationBot
+
+<img src="./dialog-example.png" alt="dialog-example" width="400"/>
+
 ## Table of Contents
 
-1. [Description](#description)
-2. [Features](#features)
-3. [Tech Stack](#tech-stack)
-4. [Installation](#installation)
-5. [Usage](#usage)
-
-## Features
-
-- Notify users about expiring subscriptions via Telegram messages
-- Easy configuration and setup
-- Utilizes Long-Pooling technology for real-time updates
+1. [Tech Stack](#tech-stack)
+2. [Project structure](#project-structure)
+3. [Installation](#installation)
+4. [Usage](#usage)
 
 ## Tech Stack
 
@@ -25,32 +22,73 @@ A custom bot developed using Node.js and TypeScript to notify users about expiri
 - **Database:** PostgreSQL
 - **ORM:** Prisma
 
+## Project structure
+
+```bash
+src
+├── commands/        # command handlers
+│   └── conversations/  # conversation-specific handlers
+├── dto/             # DTO schemas for data validation
+├── helpers/         # utilities and configurations
+│   ├── constants/   # constants for keyboards and commands
+│   ├── inversify/   # dependency injection configuration
+│   ├── keyboards/   # keyboard generators
+│   └── *.ts         # helper utilities and configs
+├── repository/      # data access layer (repositories)
+├── scheduled/       # scheduled/cron jobs
+├── services/        # business logic layer
+└── main.ts          # application entry point
+```
+
 ## Installation
 
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/artiomsopin/subs-notification-bot
-    cd subs-notification-bot
-    ```
+### 1. Clone the repository:
 
-2. Install dependencies:
-    ```bash
-    npm install
-    ```
+```bash
+git clone https://github.com/artiomsopin/subs-notification-bot
+cd subs-notification-bot
+```
 
-3. Set up the environment variables (create a `.env` file in the root directory):
-    ```env
-    TELEGRAM_BOT_TOKEN=your-telegram-bot-token
-    DATABASE_URL=your-postgresql-database-url
-    ```
+### 2. Install dependencies:
 
-4. Run the database migrations:
-    ```bash
-    npx prisma migrate dev
-    ```
+```bash
+npm install
+```
+
+### 3. Set up the environment variables:
+
+1.  Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+2.  Fill in the required environment variables.
+
+---
+
+### 4. Run the database migrations:
+
+```bash
+npx prisma migrate dev
+```
 
 ## Usage
 
-To start the bot, run:
+### To start the bot, run:
+
 ```bash
 npm run start:dev
+```
+
+### Available Commands
+
+/help — displays the welcome menu.
+
+/create — creates a subscription based on the provided data.
+
+/getall — returns a list of all subscriptions with all valid information.
+
+/edit — allows editing any necessary fields in the subscription by its name.
+
+/delete — deletes a subscription by its name.
