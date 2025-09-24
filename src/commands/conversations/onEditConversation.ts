@@ -1,7 +1,7 @@
 import { editSubscriptionDto } from "../../dto/editSubscription.dto";
 import { onEditKeyboardButtonNames } from "../../helpers/constants/onEditKeyboardButtonNames";
 import { MyContext, MyConversation } from "../../helpers/conversation.config";
-import onEditKeyboard from "../../helpers/keyboards/onEdtiKeyboard";
+import onEditKeyboard from "../../helpers/keyboards/onEditKeyboard";
 import onStartKeyboard from "../../helpers/keyboards/onStartKeyboard";
 import parseDate from "../../helpers/parseDate";
 import { SubscriptionService } from "../../services/subscriptionService";

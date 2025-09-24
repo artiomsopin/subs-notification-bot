@@ -1,4 +1,4 @@
-import { PrismaClient, Subscription, User } from "@prisma/client";
+import { Subscription, User } from "@prisma/client";
 import { SubscriptionRepository } from "./subscriptionRepository";
 import { injectable } from "inversify";
 import "reflect-metadata";
@@ -8,44 +8,39 @@ import { editSubscriptionDto } from "../dto/editSubscription.dto";
 @injectable()
 export class SubscriptionRepositoryImpl implements SubscriptionRepository {
   async editSubscriptionByServiceName(
-    editSubscriptionData: editSubscriptionDto
+    dto: editSubscriptionDto
   ): Promise<Subscription> {
-    // Find user by it's telegram id
     const user: User | null = await prisma.user.findUnique({
       where: {
-        telegramId: editSubscriptionData.telegramId,
+        telegramId: dto.telegramId,
       },
     });
 
-    // Throw error if user not found
     if (!user) {
       throw new Error("User not found");
     }
 
-    // Find subscription by it's service name
     const subscription: Subscription | null =
       await prisma.subscription.findFirst({
         where: {
-          serviceName: editSubscriptionData.serviceNameToFind,
+          serviceName: dto.serviceNameToFind,
           userId: user.id,
         },
       });
 
-    // Throw error if subscription not found
     if (!subscription) {
       throw new Error("Subscription not found");
     }
 
-    // Subscription updating
     return await prisma.subscription.update({
       where: {
         id: subscription.id,
       },
       data: {
-        serviceName: editSubscriptionData.serviceNameToEdit,
-        price: editSubscriptionData.price,
-        expirationPeriod: editSubscriptionData.expirationPeriod,
-        subscriptionExpireDate: editSubscriptionData.subscriptionExpireDate,
+        serviceName: dto.serviceNameToEdit,
+        price: dto.price,
+        expirationPeriod: dto.expirationPeriod,
+        subscriptionExpireDate: dto.subscriptionExpireDate,
       },
     });
   }
@@ -72,14 +67,12 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     subscription: Subscription,
     telegramId: number
   ): Promise<void> {
-    // User existing validation
     let user: User | null = await prisma.user.findFirst({
       where: {
         telegramId: telegramId,
       },
     });
 
-    // Create user if it doesn't exist
     if (user === null) {
       user = await prisma.user.create({
         data: {
@@ -103,7 +96,6 @@ export class SubscriptionRepositoryImpl implements SubscriptionRepository {
     serviceName: string,
     telegramId: number
   ): Promise<void> {
-    // Subscription existing validation
     const subscriptions = await prisma.subscription.findFirst({
       where: {
         serviceName: serviceName,
